@@ -427,7 +427,7 @@ public:
                 count++;
                 temp = temp->next;
             }
-            if (count < 3) return; // If there are less than 3 elements, no center node
+            if (count < 3) return; 
             temp = head;
             for (int i = 1; i < count / 2; ++i) {
                 temp = temp->next;
@@ -488,7 +488,7 @@ public:
                 count++;
                 temp = temp->next;
             }
-            if (count < 3) return; // No center for less than 3 elements
+            if (count < 3) return; 
             temp = head;
             for (int i = 1; i < count / 2; ++i) {
                 temp = temp->next;

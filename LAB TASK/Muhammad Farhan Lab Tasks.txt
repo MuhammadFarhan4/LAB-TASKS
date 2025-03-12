@@ -1,0 +1,986 @@
+
+lab 1
+
+#include<iostream>
+using namespace std;
+
+int main() {
+    int a = 1;
+    int *ptr = &a;
+
+    cout << "Before\n";
+    cout << " A : " << a << endl;
+    cout << " *Ptr : " << *ptr << endl;
+
+    cout << "After\n";
+    *ptr = 9;  
+    cout << " A : " << a << endl;
+    cout << " *Ptr : " << *ptr << endl;
+    ptr = nullptr; 
+
+    return 0;
+}
+
+
+lab 2
+
+#include<iostream>
+using namespace std;
+
+int findMax(int arr[], int length) {
+    int maximum = arr[0];
+    for (int i = 1; i < length; i++) {
+        if (arr[i] > maximum) {
+            maximum = arr[i];
+        }
+    }
+    return maximum;
+}
+
+int main() {
+    int numbers[] = {9, 18, 8, 1, 6};
+    int maxNum = findMax(numbers, 5);
+    cout << "Max " << maxNum << endl;
+
+    return 0;
+}
+
+
+lab 3
+
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int d) : data(d), next(nullptr) {}
+};
+
+class LinkedList {
+    Node* head;
+public:
+    LinkedList() : head(nullptr) {}
+
+    void addAtBeginning(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void addAtEnd(int value) {
+        Node* newNode = new Node(value);
+        if (!head) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+    void printList() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data;
+            if (temp->next) cout << ", ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    LinkedList list;
+    list.addAtBeginning(9);
+    list.addAtEnd(18);
+    list.addAtEnd(35);
+    cout << "Linked List: ";
+    list.printList();
+
+    return 0;
+}
+
+
+  lab 4 
+
+ #include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+class LinkedList {
+    Node* head;
+public:
+    LinkedList() : head(nullptr) {}
+
+    void addFirst(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void addLast(int value) {
+        Node* newNode = new Node(value);
+        if (!head) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+    void addAt(int value, int position) {
+        if (position < 1) {
+            cout << "Invalid Position.\n";
+            return;
+        }
+        if (position == 1) {
+            addFirst(value);
+            return;
+        }
+
+        Node* newNode = new Node(value);
+        Node* temp = head;
+        int count = 1;
+        while (temp && count < position - 1) {
+            temp = temp->next;
+            count++;
+        }
+
+        if (!temp) {
+            cout << "Position out of bounds.\n";
+            delete newNode;
+            return;
+        }
+
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+
+    void display() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL\n";
+    }
+};
+
+int main() {
+    LinkedList list;
+    list.addFirst(10);
+    list.addLast(20);
+    list.addLast(30);
+    list.addAt(25, 3);
+    list.display();
+    return 0;
+}
+
+
+lab 5
+
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+class LinkedList {
+    Node* head;
+public:
+    LinkedList() : head(nullptr) {}
+
+    void addFirst(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void addLast(int value) {
+        Node* newNode = new Node(value);
+        if (!head) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+    void addAtPosition(int value, int position) {
+        if (position < 1) {
+            cout << "Invalid Position\n";
+            return;
+        }
+        if (position == 1) {
+            addFirst(value);
+        } else {
+            Node* newNode = new Node(value);
+            Node* temp = head;
+            for (int i = 1; i < position - 1 && temp; ++i) {
+                temp = temp->next;
+            }
+            if (!temp) {
+                cout << "Invalid Position\n";
+                return;
+            }
+            newNode->next = temp->next;
+            temp->next = newNode;
+        }
+    }
+
+    void printList() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data;
+            if (temp->next) cout << ", ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    void printFirst() {
+        if (head) cout << head->data << endl;
+    }
+
+    void printLast() {
+        if (!head) return;
+        Node* temp = head;
+        while (temp->next) {
+            temp = temp->next;
+        }
+        cout << temp->data << endl;
+    }
+
+    void printMiddle() {
+        if (!head) return;
+        Node* temp = head;
+        int count = 0;
+        while (temp) {
+            count++;
+            temp = temp->next;
+        }
+        temp = head;
+        for (int i = 1; i < count / 2; ++i) {
+            temp = temp->next;
+        }
+        cout << temp->data << endl;
+    }
+};
+
+int main() {
+    LinkedList list;
+    list.addFirst(9);
+    list.addFirst(93);
+    list.addLast(0);
+    list.addLast(88);
+    list.addAtPosition(8, 2);
+    list.addAtPosition(18, 2);
+
+    cout << "First Node: ";
+    list.printFirst();
+
+    cout << "Last Node: ";
+    list.printLast();
+
+    cout << "Middle Node: ";
+    list.printMiddle();
+
+    cout << "Linked List: ";
+    list.printList();
+
+    return 0;
+}
+
+
+
+   lab 6
+   
+   
+   #include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+class LinkedList {
+    Node* head;
+public:
+    LinkedList() : head(nullptr) {}
+
+    void addFirst(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void addLast(int value) {
+        Node* newNode = new Node(value);
+        if (!head) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+    void addAtPosition(int value, int position) {
+        if (position < 1) {
+            cout << "Invalid Position.\n";
+            return;
+        } 
+        if (position == 1) {
+            addFirst(value);
+        } else {
+            Node* newNode = new Node(value);
+            Node* temp = head;
+            for (int i = 1; i < position - 1 && temp; ++i) {
+                temp = temp->next;
+            }
+            if (!temp) {
+                cout << "Invalid Position.\n";
+            } else {
+                newNode->next = temp->next;
+                temp->next = newNode;
+            }
+        }
+    }
+
+    void removeFirst() {
+        if (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    void removeAtPosition(int position) {
+        if (position < 1) {
+            cout << "Invalid Position.\n";
+            return;
+        }
+        if (position == 1) {
+            removeFirst();
+        } else {
+            Node* temp = head;
+            for (int i = 1; i < position - 1 && temp; ++i) {
+                temp = temp->next;
+            }
+            if (!temp || !temp->next) {
+                cout << "Invalid Position.\n";
+                return;
+            }
+            Node* toDelete = temp->next;
+            temp->next = temp->next->next;
+            delete toDelete;
+        }
+    }
+
+    void removeLast() {
+        if (head) {
+            if (!head->next) {
+                delete head;
+                head = nullptr;
+            } else {
+                Node* temp = head;
+                while (temp->next && temp->next->next) {
+                    temp = temp->next;
+                }
+                delete temp->next;
+                temp->next = nullptr;
+            }
+        }
+    }
+
+    void removeCenter() {
+        if (head) {
+            Node* temp = head;
+            int count = 0;
+            while (temp) {
+                count++;
+                temp = temp->next;
+            }
+            if (count < 3) return; // If there are less than 3 elements, no center node
+            temp = head;
+            for (int i = 1; i < count / 2; ++i) {
+                temp = temp->next;
+            }
+            Node* toDelete = temp->next;
+            temp->next = temp->next->next;
+            delete toDelete;
+        }
+    }
+
+    void removeByValue(int value) {
+        if (head) {
+            if (head->data == value) {
+                removeFirst();
+                return;
+            }
+            Node* temp = head;
+            while (temp->next && temp->next->data != value) {
+                temp = temp->next;
+            }
+            if (temp->next) {
+                Node* toDelete = temp->next;
+                temp->next = temp->next->next;
+                delete toDelete;
+            }
+        }
+    }
+
+    void printList() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data;
+            if (temp->next) cout << ", ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    void printFirst() {
+        if (head) cout << head->data << endl;
+    }
+
+    void printLast() {
+        if (head) {
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            cout << temp->data << endl;
+        }
+    }
+
+    void printCenter() {
+        if (head) {
+            Node* temp = head;
+            int count = 0;
+            while (temp) {
+                count++;
+                temp = temp->next;
+            }
+            if (count < 3) return; // No center for less than 3 elements
+            temp = head;
+            for (int i = 1; i < count / 2; ++i) {
+                temp = temp->next;
+            }
+            cout << temp->data << endl;
+        }
+    }
+};
+
+int main() {
+    LinkedList list;
+
+    list.addFirst(9);
+    list.addFirst(93);
+    list.addLast(0);
+    list.addLast(88);
+    list.addAtPosition(8, 2);
+    list.addAtPosition(77, 3);
+    list.addAtPosition(18, 2);
+
+    cout << "Before List: ";
+    list.printList();
+    cout << "First Node: ";
+    list.printFirst();
+    cout << "Last Node: ";
+    list.printLast();
+    cout << "Center Node: ";
+    list.printCenter();
+
+    cout << "--------------------------------------------\n";
+    cout << "Deleting Last Node.\n";
+    list.removeLast();
+    cout << "Last Node: ";
+    list.printLast();
+
+    cout << "Deleting First Node.\n";
+    list.removeFirst();
+    cout << "First Node: ";
+    list.printFirst();
+
+    cout << "Deleting Center Node.\n";
+    list.removeCenter();
+    cout << "Center Node: ";
+    list.printCenter();
+
+    cout << "Final List: ";
+    list.printList();
+
+    return 0;
+}
+
+
+   lab 7
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int d = 0) {
+        data = d;
+        prev = NULL;
+        next = NULL;
+    }
+};
+
+class DoublyList {
+    Node* head;
+    Node* tail;
+
+public:
+    DoublyList() {
+        head = NULL;
+    }
+
+    void insertAtFirst(int d) {
+        Node* newNode = new Node(d);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+
+    void insertAtLast(int d) {
+        Node* newNode = new Node(d);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next != NULL) {
+                temp = temp->next;
+            }
+            newNode->prev = temp;
+            temp->next = newNode;
+        }
+    }
+
+    void insertAtCenter(int d) {
+        Node* newNode = new Node(d);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            int count = 1;
+            while (temp->next != NULL) {
+                temp = temp->next;
+                count++;
+            }
+            temp = head;
+            for (int i = 1; i <= count / 2; i++) {
+                temp = temp->next;
+            }
+            newNode->next = temp->next;
+            newNode->prev = temp;
+            temp->next->prev = newNode;
+            temp->next = newNode;
+        }
+    }
+
+    void insertAtSpecificPosition(int d, int pos) {
+        Node* newNode = new Node(d);
+        if (head == NULL) {
+            head = newNode;
+        } else if (pos < 1) {
+            cout << "Invalid Position\n";
+        } else if (pos == 1) {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        } else {
+            Node* temp = head;
+            for (int i = 1; i < pos; i++) {
+                temp = temp->next;
+                if (temp == NULL) {
+                    break;
+                }
+            }
+            newNode->prev = temp;
+            newNode->next = temp->next;
+            temp->next->prev = newNode;
+            temp->next = newNode;
+        }
+    }
+
+    void displayInOrder() {
+        Node* temp = head;
+        cout << "Doubly Linked List: ";
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+            if (temp != NULL) {
+                cout << ", ";
+            }
+        }
+        cout << endl;
+    }
+
+    void displayInReverse() {
+        Node* temp = head;
+        cout << "Reversed Doubly Linked List: ";
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            if (temp->prev != NULL) {
+                cout << ", ";
+            }
+            temp = temp->prev;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoublyList d;
+
+    d.insertAtFirst(50);
+    d.insertAtLast(99);
+    d.insertAtLast(27);
+    d.insertAtLast(75);
+    d.insertAtSpecificPosition(63, 2);
+    d.displayInOrder();
+    d.displayInReverse();
+
+    d.insertAtCenter(18);
+    cout << "-----------------------------------------.\n";
+    cout << "After Adding the Center Node.\n";
+    d.displayInOrder();
+    d.displayInReverse();
+
+    return 0;
+}
+
+lab 8
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    string data;
+    Node* next;
+    Node* prev;
+
+    Node(string data) {
+        this->data = data;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+
+class SinglyLinkedList {
+public:
+    Node* head;
+
+    SinglyLinkedList() {
+        head = NULL;
+    }
+
+    void insertLast(string data) {
+        Node* newNode = new Node(data);
+        if (head == NULL) {
+            head = newNode;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+
+    void mergeList(SinglyLinkedList &list2) {
+        if (head == NULL) {
+            head = list2.head;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = list2.head;
+    }
+
+    void printList() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+class DoublyLinkedList {
+public:
+    Node* head;
+    Node* tail;
+
+    DoublyLinkedList() {
+        head = NULL;
+        tail = NULL;
+    }
+
+    void insertLast(string data) {
+        Node* newNode = new Node(data);
+        if (head == NULL) {
+            head = tail = newNode;
+            return;
+        }
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+    }
+
+    void mergeList(DoublyLinkedList &list2) {
+        if (head == NULL) {
+            head = list2.head;
+            tail = list2.tail;
+            return;
+        }
+        if (list2.head == NULL) return;
+        tail->next = list2.head;
+        list2.head->prev = tail;
+        tail = list2.tail;
+    }
+
+    void printList() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " <-> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+int main() {
+    SinglyLinkedList s1, s2;
+    s1.insertLast("Ali");
+    s1.insertLast("Faizan");
+    s1.insertLast("Shoaib");
+
+    s2.insertLast("Hasnain");
+    s2.insertLast("Najam");
+
+    cout << "Singly Linked List 1: ";
+    s1.printList();
+
+    cout << "Singly Linked List 2: ";
+    s2.printList();
+
+    s1.mergeList(s2);
+    cout << "Merged Singly Linked List: ";
+    s1.printList();
+
+    DoublyLinkedList d1, d2;
+    d1.insertLast("Ali");
+    d1.insertLast("Faizan");
+    d1.insertLast("Shoaib");
+
+    d2.insertLast("Hasnain");
+    d2.insertLast("Najam");
+
+    cout << "Doubly Linked List 1: ";
+    d1.printList();
+
+    cout << "Doubly Linked List 2: ";
+    d2.printList();
+
+    d1.mergeList(d2);
+    cout << "Merged Doubly Linked List: ";
+    d1.printList();
+
+    return 0;
+}
+
+
+
+Lab 9
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    string value;
+    Node* link;
+
+    Node(string val) {
+        this->value = val;
+        this->link = NULL;
+    }
+};
+
+class circularList {
+public:
+    Node* start;
+
+    circularList() {  
+        start = NULL;
+    }
+
+    void insertAtBeginning(string val) {
+        Node* newNode = new Node(val);
+        if (start == NULL) {
+            start = newNode;
+            start->link = start;  
+        } else {
+            Node* temp = start;
+            while (temp->link != start) {
+                temp = temp->link;
+            }
+            newNode->link = start;
+            temp->link = newNode;
+            start = newNode;  
+        }
+    }
+
+    void insertAtEnd(string val) {
+        Node* newNode = new Node(val);
+        if (start == NULL) {
+            start = newNode;
+            start->link = start;  
+        } else {
+            Node* temp = start;
+            while (temp->link != start) {
+                temp = temp->link;
+            }
+            temp->link = newNode;
+            newNode->link = start;
+        }
+    }
+
+    void insertAtPosition(int pos, string val) {
+        Node* newNode = new Node(val);
+        if (pos == 1 || start == NULL) {
+            insertAtBeginning(val);
+            return;
+        }
+
+        Node* temp = start;
+        for (int i = 1; i < pos - 1 && temp->link != start; i++) {
+            temp = temp->link;
+        }
+
+        newNode->link = temp->link;
+        temp->link = newNode;
+    }
+
+    void insertAtMiddle(string val) {
+        if (start == NULL) {
+            insertAtBeginning(val);
+            return;
+        }
+
+        Node* slow = start;
+        Node* fast = start;
+        while (fast->link != start && fast->link->link != start) {
+            slow = slow->link;
+            fast = fast->link->link;
+        }
+
+        Node* newNode = new Node(val);
+        newNode->link = slow->link;
+        slow->link = newNode;
+    }
+
+    void displayList() {
+        if (start == NULL) {
+            cout << "List is empty!\n";
+            return;
+        }
+        Node* temp = start;
+        cout << "Circular Linked List: ";
+        do {
+            cout << temp->value << " -> ";
+            temp = temp->link;
+        } while (temp != start);
+        cout << "(start)" << endl;
+    }
+
+    void reverseDisplay() {
+        if (start == NULL) {
+            cout << "List is empty!\n";
+            return;
+        }
+
+        Node* temp = start;
+        Node* prev = NULL;
+        Node* curr = start;
+
+        do {
+            Node* nextNode = curr->link;
+            curr->link = prev;
+            prev = curr;
+            curr = nextNode;
+        } while (curr != start);
+
+        start->link = prev;
+        start = prev;
+
+        cout << "Reversed List: ";
+        temp = start;
+        do {
+            cout << temp->value << " -> ";
+            temp = temp->link;
+        } while (temp != start);
+        cout << "(start)" << endl;
+    }
+};
+
+int main() {
+    circularList list;
+
+    list.insertAtBeginning("hasnain");
+    list.insertAtEnd("hammad");
+    list.insertAtPosition(2, "muhammad");
+    list.insertAtEnd("shoaib");
+    list.insertAtMiddle("farhan");
+
+    list.displayList();
+    list.reverseDisplay();
+
+    return 0;
+}
+
+
+
+   

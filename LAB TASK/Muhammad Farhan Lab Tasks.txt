@@ -980,6 +980,932 @@ int main() {
 
     return 0;
 }
+lab 10
+#include<iostream>
+using namespace std;
+
+
+class StackNode {
+public:
+    int value;
+    StackNode* nextNode;
+
+    StackNode(int val = -1) {
+        value = val;
+        nextNode = nullptr;
+    }
+};
+
+
+class LinkedStack {
+private:
+    StackNode* stackTop;
+
+public:
+    LinkedStack() {
+        stackTop = nullptr;
+    }
+
+    void insertTop(int val) {
+        StackNode* temp = new StackNode(val);
+        temp->nextNode = stackTop;
+        stackTop = temp;
+    }
+
+    void removeTop() {
+        if (!stackTop) return;
+        StackNode* toDelete = stackTop;
+        stackTop = stackTop->nextNode;
+        delete toDelete;
+    }
+
+    void insertBottom(int val) {
+        StackNode* temp = stackTop;
+        StackNode* newNode = new StackNode(val);
+        if (!temp) {
+            stackTop = newNode;
+            return;
+        }
+        while (temp->nextNode) {
+            temp = temp->nextNode;
+        }
+        temp->nextNode = newNode;
+    }
+
+    void removeBottom() {
+        if (!stackTop) return;
+        if (!stackTop->nextNode) {
+            delete stackTop;
+            stackTop = nullptr;
+            return;
+        }
+        StackNode* temp = stackTop;
+        while (temp->nextNode->nextNode) {
+            temp = temp->nextNode;
+        }
+        delete temp->nextNode;
+        temp->nextNode = nullptr;
+    }
+
+    void printStack() {
+        StackNode* current = stackTop;
+        while (current) {
+            cout << current->value;
+            if (current->nextNode) cout << " -> ";
+            current = current->nextNode;
+        }
+        cout << endl;
+    }
+};
+
+// Stack implementation using Array
+class ArrayStack {
+private:
+    int items[100];
+    int indexTop;
+
+public:
+    ArrayStack() {
+        indexTop = -1;
+    }
+
+    void pushElement(int val) {
+        if (indexTop >= 99) {
+            cout << "Array Stack Overflow!\n";
+            return;
+        }
+        items[++indexTop] = val;
+    }
+
+    void popElement() {
+        if (indexTop == -1) {
+            cout << "Array Stack Underflow!\n";
+            return;
+        }
+        indexTop--;
+    }
+
+    void pushToBottom(int val) {
+        if (indexTop >= 99) return;
+        indexTop++;
+        for (int i = indexTop; i > 0; --i) {
+            items[i] = items[i - 1];
+        }
+        items[0] = val;
+    }
+
+    void popFromBottom() {
+        if (indexTop == -1) return;
+        for (int i = 0; i < indexTop; ++i) {
+            items[i] = items[i + 1];
+        }
+        indexTop--;
+    }
+
+    void displayStack() {
+        for (int i = 0; i <= indexTop; ++i) {
+            cout << items[i];
+            if (i < indexTop) cout << " | ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    LinkedStack linkS;
+    ArrayStack arrS;
+
+    cout << "--- Linked List Based Stack ---\n";
+    linkS.insertTop(10);
+    linkS.insertTop(20);
+    linkS.insertTop(30);
+    linkS.printStack();
+
+    cout << "After inserting at bottom:\n";
+    linkS.insertBottom(99);
+    linkS.printStack();
+
+    cout << "After removing bottom:\n";
+    linkS.removeBottom();
+    linkS.printStack();
+
+    cout << "After popping top:\n";
+    linkS.removeTop();
+    linkS.printStack();
+
+    cout << "\n--- Array Based Stack ---\n";
+    arrS.pushElement(1);
+    arrS.pushElement(2);
+    arrS.pushElement(3);
+    arrS.displayStack();
+
+    cout << "After pushing at bottom:\n";
+    arrS.pushToBottom(0);
+    arrS.displayStack();
+
+    cout << "After popping from bottom:\n";
+    arrS.popFromBottom();
+    arrS.displayStack();
+
+    cout << "After popping top:\n";
+    arrS.popElement();
+    arrS.displayStack();
+
+    return 0;
+}
+lab 11
+#include<iostream>
+using namespace std;
+
+class ItemNode {
+public:
+    int data;
+    ItemNode* nextItem;
+
+    ItemNode(int value = 0) {
+        data = value;
+        nextItem = nullptr;
+    }
+};
+
+class LinkedQueue {
+private:
+    ItemNode* frontItem;
+    ItemNode* rearItem;
+
+public:
+    LinkedQueue() {
+        frontItem = nullptr;
+        rearItem = nullptr;
+    }
+
+    void addItem(int value) {
+        ItemNode* newNode = new ItemNode(value);
+        if (rearItem != nullptr) {
+            rearItem->nextItem = newNode;
+            rearItem = newNode;
+        } else {
+            frontItem = rearItem = newNode;
+        }
+    }
+
+    void removeItem() {
+        if (!frontItem) return;
+        ItemNode* temp = frontItem;
+        frontItem = frontItem->nextItem;
+        if (!frontItem) rearItem = nullptr;
+        delete temp;
+    }
+
+    void showQueue() {
+        cout << "Queue: ";
+        ItemNode* temp = frontItem;
+        while (temp) {
+            cout << temp->data;
+            if (temp->nextItem) cout << " -> ";
+            temp = temp->nextItem;
+        }
+        cout << endl;
+    }
+};
+
+class ArrayQueue {
+private:
+    int array[100];
+    int count;
+
+public:
+    ArrayQueue() {
+        count = 0;
+    }
+
+    void addItem(int value) {
+        if (count == 100) {
+            cout << "Queue is full!" << endl;
+            return;
+        }
+        array[count++] = value;
+    }
+
+    void removeItem() {
+        if (count == 0) return;
+        for (int i = 0; i < count - 1; ++i) {
+            array[i] = array[i + 1];
+        }
+        count--;
+    }
+
+    void showQueue() {
+        cout << "Array Queue: ";
+        for (int i = 0; i < count; ++i) {
+            cout << array[i];
+            if (i != count - 1) cout << " -> ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    cout << "Queue follows the FIFO (First In First Out) Rule\n\n";
+    
+    cout << "Linked List Based Queue\n";
+    LinkedQueue linkedQueue;
+    linkedQueue.addItem(99);
+    linkedQueue.addItem(89);
+    linkedQueue.addItem(79);
+    linkedQueue.addItem(819);
+    linkedQueue.addItem(59);
+    linkedQueue.showQueue();
+    cout << "After removing an item:\n";
+    linkedQueue.removeItem();
+    linkedQueue.showQueue();
+
+    cout << "\nArray Based Queue\n";
+    ArrayQueue arrayQueue;
+    arrayQueue.addItem(22);
+    arrayQueue.addItem(29);
+    arrayQueue.addItem(99);
+    arrayQueue.addItem(37);
+    arrayQueue.addItem(19);
+    arrayQueue.addItem(67);
+    arrayQueue.showQueue();
+    cout << "After removing an item:\n";
+    arrayQueue.removeItem();
+    arrayQueue.showQueue();
+
+    return 0;
+}
+
+LAB 12 PART 1
+
+#include<iostream>
+
+using namespace std;
+
+struct Node {
+    int key, height;
+    Node *left, *right;
+
+    Node(int k = 0) {
+        key = k;
+        left = nullptr;
+        right = nullptr;
+        height = 1;
+    }
+};
+
+class Avl {
+    Node* root;
+
+    int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
+
+    int height(Node* N) {
+        if (N == nullptr) return 0;
+        return N->height;
+    }
+
+    Node* rightRotate(Node* y) {
+        Node* x = y->left;
+        Node* t2 = x->right;
+
+        x->right = y;
+        y->left = t2;
+
+        y->height = 1 + max(height(y->left), height(y->right));
+        x->height = 1 + max(height(x->left), height(x->right));
+
+        return x;
+    }
+
+    Node* leftRotate(Node* x) {
+        Node* y = x->right;
+        Node* t2 = y->left;
+
+        y->left = x;
+        x->right = t2;
+
+        x->height = 1 + max(height(x->left), height(x->right));
+        y->height = 1 + max(height(y->left), height(y->right));
+
+        return y;
+    }
+
+    Node* minValueNode(Node* node) {
+        Node* current = node;
+        while (current && current->left != nullptr)
+            current = current->left;
+        return current;
+    }
+
+    Node* deleteNodeHelper(Node* node, int key) {
+        if (node == nullptr) return node;
+
+        if (key < node->key)
+            node->left = deleteNodeHelper(node->left, key);
+        else if (key > node->key)
+            node->right = deleteNodeHelper(node->right, key);
+        else {
+            if (node->left == nullptr || node->right == nullptr) {
+                Node* temp = node->left ? node->left : node->right;
+                if (temp == nullptr) {
+                    temp = node;
+                    node = nullptr;
+                } 
+                else {
+                    *node = *temp;
+                }
+                delete temp;
+            } 
+            else {
+                Node* temp = minValueNode(node->right);
+                node->key = temp->key;
+                node->right = deleteNodeHelper(node->right, temp->key);
+            }
+        }
+
+        if (node == nullptr) return node;
+
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        int balance = getBalancedFactor(node);
+
+        if (balance > 1 && getBalancedFactor(node->left) >= 0)
+            return rightRotate(node);
+
+        if (balance > 1 && getBalancedFactor(node->left) < 0) {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+
+        if (balance < -1 && getBalancedFactor(node->right) <= 0)
+            return leftRotate(node);
+
+        if (balance < -1 && getBalancedFactor(node->right) > 0) {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+    Node* insertNode(Node* node, int key) {
+        if (node == nullptr)
+            return new Node(key);
+
+        if (key < node->key)
+            node->left = insertNode(node->left, key);
+        else if (key > node->key)
+            node->right = insertNode(node->right, key);
+        else
+            return node;
+
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        int balance = getBalancedFactor(node);
+
+        if (balance > 1 && key < node->left->key)
+            return rightRotate(node);
+
+        if (balance < -1 && key > node->right->key)
+            return leftRotate(node);
+
+        if (balance > 1 && key > node->left->key) {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+
+        if (balance < -1 && key < node->right->key) {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+public:
+    Avl() {
+        root = nullptr;
+    }
+
+    int getBalancedFactor(Node* node) {
+        if (node == nullptr) return 0;
+        return height(node->left) - height(node->right);
+    }
+
+    void insert(int key) {
+        root = insertNode(root, key);
+    }
+
+    void deleteNode(int key) {
+        root = deleteNodeHelper(root, key);
+    }
+
+    void inorder(Node* node) {
+        if (node == nullptr) return;
+        inorder(node->left);
+        cout << node->key << " -> ";
+        inorder(node->right);
+    }
+
+    void preorder(Node* node) {
+        if (node != nullptr) {
+            cout << node->key << " ";
+            preorder(node->left);
+            preorder(node->right);
+        }
+    }
+
+    Node* getRoot() const { return root; }
+};
+
+int main() {
+    int nodes[] = { 12, 25, 35, 50, 60, 30 };
+    Avl avl;
+    
+    for (int key: nodes)
+    {
+        avl.insert(key);
+    }
+
+    cout << "Preorder traversal before deletion: ";
+    avl.preorder(avl.getRoot());
+    cout << endl;
+
+    avl.deleteNode(35);
+
+    cout << "Preorder traversal after deletion: ";
+    avl.preorder(avl.getRoot());
+    cout << endl;
+
+    return 0;
+}
+
+LAB 12 
+PART 2
+
+#include<iostream>
+
+using namespace std;
+
+struct Node {
+    int key, height;
+    Node *left, *right;
+
+    Node(int k = 0) {
+        key = k;
+        left = nullptr;
+        right = nullptr;
+        height = 1;
+    }
+};
+
+class Avl {
+    Node* root;
+
+    int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
+
+    int height(Node* N) {
+        if (N == nullptr) return 0;
+        return N->height;
+    }
+
+    Node* rightRotate(Node* y) {
+        Node* x = y->left;
+        Node* t2 = x->right;
+
+        x->right = y;
+        y->left = t2;
+
+        y->height = 1 + max(height(y->left), height(y->right));
+        x->height = 1 + max(height(x->left), height(x->right));
+
+        return x;
+    }
+
+    Node* leftRotate(Node* x) {
+        Node* y = x->right;
+        Node* t2 = y->left;
+
+        y->left = x;
+        x->right = t2;
+
+        x->height = 1 + max(height(x->left), height(x->right));
+        y->height = 1 + max(height(y->left), height(y->right));
+
+        return y;
+    }
+
+    Node* minValueNode(Node* node) {
+        Node* current = node;
+        while (current && current->left != nullptr)
+            current = current->left;
+        return current;
+    }
+
+    Node* deleteNodeHelper(Node* node, int key) {
+        if (node == nullptr) return node;
+
+        if (key < node->key)
+            node->left = deleteNodeHelper(node->left, key);
+        else if (key > node->key)
+            node->right = deleteNodeHelper(node->right, key);
+        else {
+            if (node->left == nullptr || node->right == nullptr) {
+                Node* temp = node->left ? node->left : node->right;
+                if (temp == nullptr) {
+                    temp = node;
+                    node = nullptr;
+                } 
+                else {
+                    *node = *temp;
+                }
+                delete temp;
+            } 
+            else {
+                Node* temp = minValueNode(node->right);
+                node->key = temp->key;
+                node->right = deleteNodeHelper(node->right, temp->key);
+            }
+        }
+
+        if (node == nullptr) return node;
+
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        int balance = getBalancedFactor(node);
+
+        if (balance > 1 && getBalancedFactor(node->left) >= 0)
+            return rightRotate(node);
+
+        if (balance > 1 && getBalancedFactor(node->left) < 0) {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+
+        if (balance < -1 && getBalancedFactor(node->right) <= 0)
+            return leftRotate(node);
+
+        if (balance < -1 && getBalancedFactor(node->right) > 0) {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+    Node* insertNode(Node* node, int key) {
+        if (node == nullptr)
+            return new Node(key);
+
+        if (key < node->key)
+            node->left = insertNode(node->left, key);
+        else if (key > node->key)
+            node->right = insertNode(node->right, key);
+        else
+            return node;
+
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        int balance = getBalancedFactor(node);
+
+        if (balance > 1 && key < node->left->key)
+            return rightRotate(node);
+
+        if (balance < -1 && key > node->right->key)
+            return leftRotate(node);
+
+        if (balance > 1 && key > node->left->key) {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+
+        if (balance < -1 && key < node->right->key) {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+public:
+    Avl() {
+        root = nullptr;
+    }
+
+    int getBalancedFactor(Node* node) {
+        if (node == nullptr) return 0;
+        return height(node->left) - height(node->right);
+    }
+
+    void insert(int key) {
+        root = insertNode(root, key);
+    }
+
+    void deleteNode(int key) {
+        root = deleteNodeHelper(root, key);
+    }
+
+    void inorder(Node* node) {
+        if (node == nullptr) return;
+        inorder(node->left);
+        cout << node->key << " -> ";
+        inorder(node->right);
+    }
+
+    void preorder(Node* node) {
+        if (node != nullptr) {
+            cout << node->key << " ";
+            preorder(node->left);
+            preorder(node->right);
+        }
+    }
+
+    Node* getRoot() const { return root; }
+};
+
+int main() {
+    int nodes[] = { 12, 25, 35, 50, 60, 30 };
+    Avl avl;
+    
+    for (int key: nodes)
+    {
+        avl.insert(key);
+    }
+
+    cout << "Preorder traversal before deletion: ";
+    avl.preorder(avl.getRoot());
+    cout << endl;
+
+    avl.deleteNode(35);
+
+    cout << "Preorder traversal after deletion: ";
+    avl.preorder(avl.getRoot());
+    cout << endl;
+
+    return 0;
+}
+
+LAB 13
+part 1
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int data;
+    TreeNode* leftChild;
+    TreeNode* rightChild;
+    TreeNode(int val) : data(val), leftChild(nullptr), rightChild(nullptr) {}
+};
+
+class TreeTraversal {
+public:
+    TreeNode* rootNode;
+
+    TreeTraversal() : rootNode(nullptr) {}
+
+    void insertValue(int val) {
+        rootNode = insertHelper(rootNode, val);
+    }
+
+    void depthFirstSearch(TreeNode* node) {
+        if (node == nullptr) return;
+        cout << node->data << " ";
+        depthFirstSearch(node->leftChild);
+        depthFirstSearch(node->rightChild);
+    }
+
+private:
+    TreeNode* insertHelper(TreeNode* node, int val) {
+        if (node == nullptr) return new TreeNode(val);
+        if (val < node->data) {
+            node->leftChild = insertHelper(node->leftChild, val);
+        } else {
+            node->rightChild = insertHelper(node->rightChild, val);
+        }
+        return node;
+    }
+};
+
+int main() {
+    TreeTraversal tree;
+    tree.insertValue(20);
+    tree.insertValue(10);
+    tree.insertValue(30);
+    tree.insertValue(5);
+
+    cout << "DFS Traversal of Tree: ";
+    tree.depthFirstSearch(tree.rootNode);
+    cout << endl;
+
+    return 0;
+}
+
+lab 13
+part 2
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class GraphTraversal {
+    vector<vector<int>> adjacencyList;
+
+public:
+    GraphTraversal(int nodes) {
+        adjacencyList.resize(nodes);
+    }
+
+    void addEdge(int u, int v) {
+        adjacencyList[u].push_back(v);
+    }
+
+    void depthFirstSearch(int startNode, vector<bool>& visited) {
+        visited[startNode] = true;
+        cout << startNode << " ";
+
+        for (int neighbor : adjacencyList[startNode]) {
+            if (!visited[neighbor]) {
+                depthFirstSearch(neighbor, visited);
+            }
+        }
+    }
+};
+
+int main() {
+    GraphTraversal graph(6);
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(2, 4);
+
+    vector<bool> visited(6, false);
+    cout << "DFS Traversal of Graph: ";
+    graph.depthFirstSearch(0, visited);
+    cout << endl;
+
+    return 0;
+}
+ lab 13 
+part 3
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct TreeNode {
+    int data;
+    TreeNode* leftChild;
+    TreeNode* rightChild;
+    TreeNode(int val) : data(val), leftChild(nullptr), rightChild(nullptr) {}
+};
+
+class TreeTraversal {
+public:
+    TreeNode* rootNode;
+
+    TreeTraversal() : rootNode(nullptr) {}
+
+    void insertValue(int val) {
+        rootNode = insertHelper(rootNode, val);
+    }
+
+    void breadthFirstSearch() {
+        if (rootNode == nullptr) return;
+        queue<TreeNode*> q;
+        q.push(rootNode);
+
+        while (!q.empty()) {
+            TreeNode* currentNode = q.front();
+            q.pop();
+            cout << currentNode->data << " ";
+
+            if (currentNode->leftChild) q.push(currentNode->leftChild);
+            if (currentNode->rightChild) q.push(currentNode->rightChild);
+        }
+    }
+
+private:
+    TreeNode* insertHelper(TreeNode* node, int val) {
+        if (node == nullptr) return new TreeNode(val);
+        if (val < node->data) {
+            node->leftChild = insertHelper(node->leftChild, val);
+        } else {
+            node->rightChild = insertHelper(node->rightChild, val);
+        }
+        return node;
+    }
+};
+
+int main() {
+    TreeTraversal tree;
+    tree.insertValue(20);
+    tree.insertValue(10);
+    tree.insertValue(30);
+    tree.insertValue(5);
+
+    cout << "BFS Traversal of Tree: ";
+    tree.breadthFirstSearch();
+    cout << endl;
+
+    return 0;
+}
+
+lab 13
+part 4
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+class GraphTraversal {
+    vector<vector<int>> adjacencyList;
+
+public:
+    GraphTraversal(int nodes) {
+        adjacencyList.resize(nodes);
+    }
+
+    void addEdge(int u, int v) {
+        adjacencyList[u].push_back(v);
+    }
+
+    void breadthFirstSearch(int startNode) {
+        vector<bool> visited(adjacencyList.size(), false);
+        queue<int> q;
+        q.push(startNode);
+        visited[startNode] = true;
+
+        while (!q.empty()) {
+            int currentNode = q.front();
+            q.pop();
+            cout << currentNode << " ";
+
+            for (int neighbor : adjacencyList[currentNode]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push(neighbor);
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    GraphTraversal graph(6);
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(2, 4);
+
+    cout << "BFS Traversal of Graph: ";
+    graph.breadthFirstSearch(0);
+    cout << endl;
+
+    return 0;
+}
+
 
 
 
